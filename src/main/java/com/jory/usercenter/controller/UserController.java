@@ -28,6 +28,7 @@ import static com.jory.usercenter.constant.UserConstant.USER_LOGIN_STATE;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = {"http://p6.jory.club"}, allowCredentials = "true")
 public class UserController {
 
     @Resource
@@ -37,12 +38,12 @@ public class UserController {
     public BaseResponse<User> getCurrentUser(HttpServletRequest request) {
         Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
         User currentUser = (User) userObj;
-        if (currentUser==null){
+        if (currentUser == null) {
             /**
              * 用户未登录
              */
 //            return ResultUtils.error(ErrorCode.NOT_LOGIN);
-            throw new BusinessException(ErrorCode.NOT_LOGIN,"用户未登录");
+            throw new BusinessException(ErrorCode.NOT_LOGIN, "用户未登录");
         }
         long id = currentUser.getId();
         //todo 校验用户是否合法
@@ -53,7 +54,7 @@ public class UserController {
 
     @PostMapping("/outLogin")
     public BaseResponse<Integer> outLogin(HttpServletRequest request) {
-        if (request == null){
+        if (request == null) {
             throw new BusinessException(ErrorCode.PARAMS_NULL);
         }
         int result = userService.userOutLogin(request);
@@ -64,13 +65,13 @@ public class UserController {
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         if (userRegisterRequest == null) {
             //请求参数错误
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求参数错误");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数错误");
         }
         String userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
-            throw new BusinessException(ErrorCode.PARAMS_NULL,"数据为空");
+            throw new BusinessException(ErrorCode.PARAMS_NULL, "数据为空");
         }
         long result = userService.userRegister(userAccount, userPassword, checkPassword);
         return ResultUtils.success(result);
@@ -99,9 +100,10 @@ public class UserController {
     @GetMapping("/search")
     public BaseResponse<List<User>> searchUsers(String username, HttpServletRequest httpServletRequest) {
         //鉴权 仅管理员可以
-        if (!roleValid(httpServletRequest)){
+        if (!roleValid(httpServletRequest)) {
             throw new BusinessException(ErrorCode.NO_AUTH);
-        };
+        }
+        ;
 
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotBlank(username)) {
@@ -113,12 +115,13 @@ public class UserController {
     }
 
     @PostMapping("/delete")
-    public BaseResponse<Boolean> searchUsers(int id,HttpServletRequest httpServletRequest) {
-        if (!roleValid(httpServletRequest)){
+    public BaseResponse<Boolean> searchUsers(int id, HttpServletRequest httpServletRequest) {
+        if (!roleValid(httpServletRequest)) {
             throw new BusinessException(ErrorCode.NO_AUTH);
-        };
+        }
+        ;
         if (id < 0) {
-            throw new BusinessException(ErrorCode.PARAMS_NULL,"无此用户信息");
+            throw new BusinessException(ErrorCode.PARAMS_NULL, "无此用户信息");
         }
         boolean result = userService.removeById(id);
         return ResultUtils.success(result);
@@ -126,10 +129,11 @@ public class UserController {
 
     /**
      * 是否为管理员
+     *
      * @param httpServletRequest
      * @return
      */
-    private boolean roleValid(HttpServletRequest httpServletRequest){
+    private boolean roleValid(HttpServletRequest httpServletRequest) {
         Object userObj = httpServletRequest.getSession().getAttribute(USER_LOGIN_STATE);
         User user = (User) userObj;
         return user != null && user.getAuthority() == ADMIN_ROLE;
