@@ -76,6 +76,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = new User();
         user.setAccount(userAccount);
         user.setPassword(md5Password);
+        user.setUsername(userAccount + RandomStringUtils.randomAlphanumeric(5));
         boolean saveResult = this.save(user);
         if (!saveResult) {
             throw new BusinessException(ErrorCode.FLURL,"插入数据失败");
