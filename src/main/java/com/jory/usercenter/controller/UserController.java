@@ -27,7 +27,7 @@ import static com.jory.usercenter.constant.UserConstant.USER_LOGIN_STATE;
  */
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping(value = "/user",method = {RequestMethod.GET,RequestMethod.POST})
 public class UserController {
 
     @Resource
