@@ -17,8 +17,8 @@ public class WebMvcConfg implements WebMvcConfigurer {
                         "http://127.0.0.1:8081",
                         "http://127.0.0.1:8082",
                         "http://127.0.0.1:8083",
-                        "http://p6.jory.club",// 添加你的服务器域名
-                        "http://p6.jory.club:8080" // 添加你的服务器域名
+                        "http://123.249.88.185",// 添加你的服务器域名
+                        "http://123.249.88.185:8080" // 添加你的服务器域名
                 )
                 // 是否允许证书 不再默认开启
                 .allowCredentials(true)
