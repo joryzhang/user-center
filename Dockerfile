@@ -6,6 +6,7 @@ FROM maven:3.8.1-jdk-8-slim as builder
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
+COPY settings.xml /root/.m2/settings.xml
 
 # Build a release artifact.
 RUN mvn package -DskipTests
