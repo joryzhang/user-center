@@ -27,7 +27,7 @@ import static com.jory.usercenter.constant.UserConstant.USER_LOGIN_STATE;
  */
 
 @RestController
-@CrossOrigin(allowCredentials = "true",methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.OPTIONS})
+@CrossOrigin(methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.OPTIONS})
 @RequestMapping(value = "/user",method = {RequestMethod.GET,RequestMethod.POST})
 public class UserController {
 
